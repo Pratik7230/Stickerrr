@@ -32,6 +32,7 @@ public class PackListAdapter extends RecyclerView.Adapter<PackListAdapter.ViewHo
 
     public interface AddToWhatsAppListener {
         void onAddToWhatsApp(StickerPack pack);
+        void onPreviewPack(StickerPack pack);
         void onEditPack(StickerPack pack);
         void onDeletePack(StickerPack pack);
     }
@@ -71,6 +72,9 @@ public class PackListAdapter extends RecyclerView.Adapter<PackListAdapter.ViewHo
         holder.btnAddToWhatsApp.setOnClickListener(v -> {
             if (addToWhatsAppListener != null) addToWhatsAppListener.onAddToWhatsApp(pack);
         });
+        holder.btnPreview.setOnClickListener(v -> {
+            if (addToWhatsAppListener != null) addToWhatsAppListener.onPreviewPack(pack);
+        });
         holder.btnEdit.setOnClickListener(v -> {
             if (addToWhatsAppListener != null) addToWhatsAppListener.onEditPack(pack);
         });
@@ -89,6 +93,7 @@ public class PackListAdapter extends RecyclerView.Adapter<PackListAdapter.ViewHo
         TextView txtPackName;
         TextView txtPublisher;
         Button btnAddToWhatsApp;
+        Button btnPreview;
         Button btnEdit;
         Button btnDelete;
 
@@ -98,6 +103,7 @@ public class PackListAdapter extends RecyclerView.Adapter<PackListAdapter.ViewHo
             txtPackName = itemView.findViewById(R.id.txtPackName);
             txtPublisher = itemView.findViewById(R.id.txtPublisher);
             btnAddToWhatsApp = itemView.findViewById(R.id.btnAddToWhatsApp);
+            btnPreview = itemView.findViewById(R.id.btnPreview);
             btnEdit = itemView.findViewById(R.id.btnEdit);
             btnDelete = itemView.findViewById(R.id.btnDelete);
         }

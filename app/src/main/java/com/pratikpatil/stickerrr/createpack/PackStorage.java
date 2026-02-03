@@ -101,6 +101,16 @@ public final class PackStorage {
     }
 
     /**
+     * Replace an existing sticker image with a new image from URI (same filename, overwrites file).
+     */
+    public void replaceStickerImage(@NonNull String packIdentifier, @NonNull String existingFileName, @NonNull Uri newImageUri) throws IOException {
+        File packDir = getPackDir(packIdentifier);
+        File outFile = new File(packDir, existingFileName);
+        ImageHelper.saveAsStickerImage(context, newImageUri, outFile);
+        StickerContentProvider.notifyPacksChanged(context);
+    }
+
+    /**
      * Delete a single sticker file from the pack (e.g. when removing a sticker in edit mode).
      */
     public boolean deleteStickerFile(@NonNull String packIdentifier, @NonNull String fileName) {

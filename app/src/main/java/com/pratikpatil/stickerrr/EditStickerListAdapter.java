@@ -17,14 +17,22 @@ public class EditStickerListAdapter extends RecyclerView.Adapter<EditStickerList
 
     private final List<Sticker> stickers;
     private final OnRemoveStickerListener onRemoveStickerListener;
+    private final OnUpdateStickerListener onUpdateStickerListener;
 
     public interface OnRemoveStickerListener {
         void onRemoveSticker(Sticker sticker, int position);
     }
 
-    public EditStickerListAdapter(List<Sticker> stickers, OnRemoveStickerListener onRemoveStickerListener) {
+    public interface OnUpdateStickerListener {
+        void onUpdateSticker(Sticker sticker, int position);
+    }
+
+    public EditStickerListAdapter(List<Sticker> stickers,
+                                  OnRemoveStickerListener onRemoveStickerListener,
+                                  OnUpdateStickerListener onUpdateStickerListener) {
         this.stickers = stickers;
         this.onRemoveStickerListener = onRemoveStickerListener;
+        this.onUpdateStickerListener = onUpdateStickerListener;
     }
 
     @Override
@@ -38,6 +46,11 @@ public class EditStickerListAdapter extends RecyclerView.Adapter<EditStickerList
         Sticker s = stickers.get(position);
         holder.txtStickerIndex.setText("#" + (position + 1));
         holder.txtStickerFile.setText(s.imageFileName);
+        holder.btnUpdate.setOnClickListener(v -> {
+            if (onUpdateStickerListener != null) {
+                onUpdateStickerListener.onUpdateSticker(s, holder.getBindingAdapterPosition());
+            }
+        });
         holder.btnRemove.setOnClickListener(v -> {
             if (onRemoveStickerListener != null) {
                 onRemoveStickerListener.onRemoveSticker(s, holder.getBindingAdapterPosition());
@@ -53,12 +66,14 @@ public class EditStickerListAdapter extends RecyclerView.Adapter<EditStickerList
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtStickerIndex;
         TextView txtStickerFile;
+        Button btnUpdate;
         Button btnRemove;
 
         ViewHolder(View itemView) {
             super(itemView);
             txtStickerIndex = itemView.findViewById(R.id.txtStickerIndex);
             txtStickerFile = itemView.findViewById(R.id.txtStickerFile);
+            btnUpdate = itemView.findViewById(R.id.btnUpdate);
             btnRemove = itemView.findViewById(R.id.btnRemove);
         }
     }

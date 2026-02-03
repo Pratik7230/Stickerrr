@@ -24,4 +24,7 @@
     <string name="pack_deleted">Pack deleted</string>
     <string name="edit_pack">Edit pack</string>
     <string name="remove">Remove</string>
+    <string name="preview">Preview</string>
+    <string name="replace_image">Replace image</string>
+    <string name="update">Update</string>
 </resources>

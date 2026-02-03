@@ -31,7 +31,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class EditPackActivity extends AppCompatActivity implements EditStickerListAdapter.OnRemoveStickerListener {
+public class EditPackActivity extends AppCompatActivity
+        implements EditStickerListAdapter.OnRemoveStickerListener, EditStickerListAdapter.OnUpdateStickerListener {
 
     public static final String EXTRA_PACK_ID = "pack_id";
 
@@ -44,6 +45,7 @@ public class EditPackActivity extends AppCompatActivity implements EditStickerLi
     private Uri trayUri;
     private final List<Sticker> stickers = new ArrayList<>();
     private PackStorage packStorage;
+    private int pendingReplacePosition = -1;
     private EditText editPackName;
     private EditText editPublisher;
     private ImageView imgTrayPreview;
@@ -71,7 +73,20 @@ public class EditPackActivity extends AppCompatActivity implements EditStickerLi
             result -> {
                 if (result.getResultCode() != RESULT_OK || result.getData() == null) return;
                 Uri uri = result.getData().getData();
-                if (uri != null) addStickerFromUri(uri);
+                if (uri == null) return;
+                if (pendingReplacePosition >= 0 && pendingReplacePosition < stickers.size()) {
+                    Sticker sticker = stickers.get(pendingReplacePosition);
+                    try {
+                        packStorage.replaceStickerImage(packIdentifier, sticker.imageFileName, uri);
+                        stickerAdapter.notifyItemChanged(pendingReplacePosition);
+                        Toast.makeText(this, R.string.pack_saved, Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        Toast.makeText(this, "Failed to replace: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                    pendingReplacePosition = -1;
+                } else {
+                    addStickerFromUri(uri);
+                }
             });
 
     @Override
@@ -99,7 +114,7 @@ public class EditPackActivity extends AppCompatActivity implements EditStickerLi
         loadPack();
         trayFileName = "tray_" + packIdentifier + ".png";
 
-        stickerAdapter = new EditStickerListAdapter(stickers, this);
+        stickerAdapter = new EditStickerListAdapter(stickers, this, this);
         recyclerStickers.setLayoutManager(new LinearLayoutManager(this));
         recyclerStickers.setAdapter(stickerAdapter);
 
@@ -172,6 +187,13 @@ public class EditPackActivity extends AppCompatActivity implements EditStickerLi
         } catch (Exception e) {
             Toast.makeText(this, "Failed to add sticker: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onUpdateSticker(Sticker sticker, int position) {
+        pendingReplacePosition = position;
+        Intent i = new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
+        pickImage.launch(Intent.createChooser(i, getString(R.string.replace_image)));
     }
 
     @Override

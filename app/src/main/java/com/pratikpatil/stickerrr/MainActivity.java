@@ -88,10 +88,15 @@ public class MainActivity extends AppCompatActivity implements PackListAdapter.A
     }
 
     @Override
+    public void onPreviewPack(@NonNull StickerPack pack) {
+        startActivity(new Intent(this, StickerPackDetailActivity.class)
+                .putExtra(StickerPackDetailActivity.EXTRA_PACK_ID, pack.identifier));
+    }
+
+    @Override
     public void onEditPack(@NonNull StickerPack pack) {
-        Intent intent = new Intent(this, EditPackActivity.class);
-        intent.putExtra(EditPackActivity.EXTRA_PACK_ID, pack.identifier);
-        startActivity(intent);
+        startActivity(new Intent(this, EditPackActivity.class)
+                .putExtra(EditPackActivity.EXTRA_PACK_ID, pack.identifier));
     }
 
     @Override

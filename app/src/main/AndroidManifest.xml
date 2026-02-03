@@ -32,6 +32,10 @@
             android:name=".EditPackActivity"
             android:exported="false"
             android:title="@string/edit_pack" />
+        <activity
+            android:name=".StickerPackDetailActivity"
+            android:exported="false"
+            android:title="@string/preview" />
 
         <provider
             android:name=".stickerapi.StickerContentProvider"
