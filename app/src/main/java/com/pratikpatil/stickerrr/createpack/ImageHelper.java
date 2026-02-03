@@ -185,4 +185,42 @@ public final class ImageHelper {
         canvas.drawText(text, x, y, paint);
         return result;
     }
+
+    /**
+     * Draw text on the bitmap at the given position (left X, baseline Y) with the given size.
+     * Does not modify the original; returns a new bitmap.
+     */
+    @NonNull
+    public static Bitmap drawTextOnBitmapAt(@NonNull Bitmap source, @NonNull String text, int textColor,
+            float textSizePx, float leftX, float baselineY) {
+        return drawTextOnBitmapAt(source, text, textColor, textSizePx, leftX, baselineY, 0f);
+    }
+
+    /**
+     * Draw text on the bitmap at the given position with size and rotation (degrees).
+     * Rotation is around the center of the text.
+     */
+    @NonNull
+    public static Bitmap drawTextOnBitmapAt(@NonNull Bitmap source, @NonNull String text, int textColor,
+            float textSizePx, float leftX, float baselineY, float rotationDegrees) {
+        Bitmap result = source.copy(source.getConfig() != null ? source.getConfig() : Bitmap.Config.ARGB_8888, true);
+        Canvas canvas = new Canvas(result);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(textColor);
+        paint.setTextSize(textSizePx);
+        paint.setTextAlign(Paint.Align.LEFT);
+        Rect bounds = new Rect();
+        paint.getTextBounds(text, 0, text.length(), bounds);
+        float centerX = leftX + bounds.width() / 2f;
+        float centerY = baselineY - (bounds.top + bounds.bottom) / 2f;
+        if (rotationDegrees != 0f) {
+            canvas.save();
+            canvas.rotate(rotationDegrees, centerX, centerY);
+        }
+        canvas.drawText(text, leftX, baselineY, paint);
+        if (rotationDegrees != 0f) {
+            canvas.restore();
+        }
+        return result;
+    }
 }

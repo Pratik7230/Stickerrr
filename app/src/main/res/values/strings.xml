@@ -34,4 +34,8 @@
     <string name="done">Done</string>
     <string name="text_hint">Enter text</string>
     <string name="add">Add</string>
+    <string name="apply">Apply</string>
+    <string name="text_size">Text size</string>
+    <string name="rotation">Rotation</string>
+    <string name="text_color">Text color</string>
 </resources>
