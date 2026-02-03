@@ -65,20 +65,39 @@
         android:text="@string/text_color"
         android:textAppearance="?attr/textAppearanceBodySmall" />
 
-    <HorizontalScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginTop="@dimen/spacing_xs"
-        android:scrollbars="none">
+        android:gravity="center_vertical">
 
-        <LinearLayout
-            android:id="@+id/colorSwatches"
+        <HorizontalScrollView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/colorSwatches"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingVertical="@dimen/spacing_xs">
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCustomColor"
+            style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="@dimen/spacing_xs">
-        </LinearLayout>
-    </HorizontalScrollView>
+            android:layout_marginStart="@dimen/spacing_sm"
+            android:text="+"
+            android:textSize="24sp"
+            android:minWidth="48dp"
+            app:cornerRadius="12dp" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

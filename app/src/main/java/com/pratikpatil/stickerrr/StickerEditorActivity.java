@@ -179,6 +179,12 @@ public class StickerEditorActivity extends AppCompatActivity {
                     .setCancelable(true)
                     .create();
             root.findViewById(R.id.btnCancelText).setOnClickListener(v -> overlay.dismiss());
+            root.findViewById(R.id.btnCustomColor).setOnClickListener(v -> {
+                showColorPickerDialog(finalSelectedColor[0], (pickedColor) -> {
+                    finalSelectedColor[0] = pickedColor;
+                    imageWithText.setTextColor(pickedColor);
+                });
+            });
             root.findViewById(R.id.btnApplyText).setOnClickListener(v -> {
                 float textX = imageWithText.getTextX();
                 float textY = imageWithText.getTextY();
@@ -245,6 +251,29 @@ public class StickerEditorActivity extends AppCompatActivity {
             drawable.setStroke(strokeWidth, Color.GRAY);
         }
         return drawable;
+    }
+
+    private void showColorPickerDialog(int initialColor, ColorSelectedListener listener) {
+        View dialogRoot = LayoutInflater.from(this).inflate(R.layout.dialog_color_picker, null);
+        View colorPreview = dialogRoot.findViewById(R.id.colorPreview);
+        com.pratikpatil.stickerrr.view.ColorPickerView colorPicker = dialogRoot.findViewById(R.id.colorPicker);
+
+        colorPicker.setColor(initialColor);
+        colorPreview.setBackgroundColor(initialColor);
+        colorPicker.setOnColorChangedListener((color) -> colorPreview.setBackgroundColor(color));
+
+        AlertDialog colorDialog = new AlertDialog.Builder(this)
+                .setView(dialogRoot)
+                .setCancelable(true)
+                .create();
+
+        dialogRoot.findViewById(R.id.btnCancelColor).setOnClickListener(v -> colorDialog.dismiss());
+        dialogRoot.findViewById(R.id.btnSelectColor).setOnClickListener(v -> {
+            listener.onColorSelected(colorPicker.getColor());
+            colorDialog.dismiss();
+        });
+
+        colorDialog.show();
     }
 
     private interface ColorSelectedListener {
