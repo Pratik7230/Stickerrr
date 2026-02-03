@@ -100,7 +100,10 @@ public class EditPackActivity extends AppCompatActivity
             return;
         }
 
-        setTitle(R.string.edit_pack);
+        setSupportActionBar(findViewById(R.id.toolbar));
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         packStorage = new PackStorage(this);
 
         editPackName = findViewById(R.id.editPackName);
@@ -129,6 +132,12 @@ public class EditPackActivity extends AppCompatActivity
         });
 
         btnSave.setOnClickListener(v -> savePack());
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     private void loadPack() {

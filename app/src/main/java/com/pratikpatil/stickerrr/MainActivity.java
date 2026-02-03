@@ -4,7 +4,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -26,7 +25,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements PackListAdapter.AddToWhatsAppListener {
 
     private RecyclerView recyclerPacks;
-    private TextView emptyText;
+    private View emptyText;
     private PackListAdapter adapter;
 
     private final ActivityResultLauncher<Intent> addToWhatsAppLauncher = registerForActivityResult(
@@ -47,9 +46,11 @@ public class MainActivity extends AppCompatActivity implements PackListAdapter.A
 
         SamplePackHelper.ensureSamplePackExists(this);
 
+        setSupportActionBar(findViewById(R.id.toolbar));
+
         recyclerPacks = findViewById(R.id.recyclerPacks);
         emptyText = findViewById(R.id.emptyText);
-        FloatingActionButton fabCreate = findViewById(R.id.fabCreate);
+        com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton fabCreate = findViewById(R.id.fabCreate);
 
         recyclerPacks.setLayoutManager(new LinearLayoutManager(this));
         adapter = new PackListAdapter(getContentResolver(), this);

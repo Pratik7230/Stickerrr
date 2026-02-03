@@ -1,7 +1,20 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Stickerrr" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    <style name="Base.Theme.Stickerrr" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">#2DD4BF</item>
+        <item name="colorOnPrimary">#003731</item>
+        <item name="colorPrimaryContainer">#005047</item>
+        <item name="colorOnPrimaryContainer">#5FF7E4</item>
+        <item name="colorSecondary">#67D4F9</item>
+        <item name="colorOnSecondary">#003547</item>
+        <item name="colorSecondaryContainer">#004D65</item>
+        <item name="colorOnSecondaryContainer">#B8EAFF</item>
+        <item name="android:colorBackground">#121212</item>
+        <item name="colorSurface">#1E1E1E</item>
+        <item name="colorOutline">#64748B</item>
+        <item name="android:statusBarColor">#0D9488</item>
+        <item name="android:navigationBarColor">#121212</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Stickerrr.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Stickerrr.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Stickerrr.Large</item>
     </style>
 </resources>

@@ -78,6 +78,11 @@ public class CreatePackActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_pack);
 
+        setSupportActionBar(findViewById(R.id.toolbar));
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         packStorage = new PackStorage(this);
 
         editPackName = findViewById(R.id.editPackName);
@@ -132,6 +137,12 @@ public class CreatePackActivity extends AppCompatActivity {
         });
 
         btnSave.setOnClickListener(v -> savePack());
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     private void addStickerFromUri(Uri uri) {
