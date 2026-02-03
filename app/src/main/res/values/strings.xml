@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Stickerrr</string>
+    <string name="create_new_pack">Create new pack</string>
+    <string name="add_to_whatsapp">Add to WhatsApp</string>
+    <string name="no_packs_yet">No sticker packs yet. Create one!</string>
+    <string name="whatsapp_not_installed">WhatsApp is not installed.</string>
+    <string name="pack_name">Pack name</string>
+    <string name="publisher">Publisher</string>
+    <string name="tray_icon">Tray icon</string>
+    <string name="pick_tray_icon">Pick tray icon</string>
+    <string name="add_stickers">Add stickers</string>
+    <string name="pick_image">Pick image</string>
+    <string name="save_pack">Save pack</string>
+    <string name="next">Next</string>
+    <string name="emojis_hint">Emojis (e.g. 😀)</string>
+    <string name="accessibility_hint">Accessibility description</string>
+    <string name="pack_saved">Pack saved!</string>
+    <string name="add_at_least_3">Add at least 3 stickers (max 30)</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="delete_pack_title">Delete pack?</string>
+    <string name="delete_pack_message">This will remove the sticker pack permanently. Stickers already added to WhatsApp will stay there.</string>
+    <string name="cancel">Cancel</string>
+    <string name="pack_deleted">Pack deleted</string>
+    <string name="edit_pack">Edit pack</string>
+    <string name="remove">Remove</string>
+</resources>
