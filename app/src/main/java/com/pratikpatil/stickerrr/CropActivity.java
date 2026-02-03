@@ -13,6 +13,7 @@ import com.canhub.cropper.CropImageView;
 import com.pratikpatil.stickerrr.createpack.ImageHelper;
 
 import java.io.IOException;
+import java.util.concurrent.Executors;
 
 /**
  * In-app crop screen with explicit Done and Cancel buttons.
@@ -67,29 +68,26 @@ public class CropActivity extends AppCompatActivity {
     private void onCropDone() {
         View doneBtn = findViewById(R.id.btnDone);
         doneBtn.setEnabled(false);
-        cropImageView.setOnCropImageCompleteListener((view, result) -> {
-            doneBtn.setEnabled(true);
-            if (result.getError() != null) {
-                Toast.makeText(this, "Crop failed", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            Bitmap bitmap = result.getBitmap();
-            if (bitmap == null) {
-                Toast.makeText(this, "Crop failed", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            try {
-                Uri savedUri = ImageHelper.saveBitmapToCacheUri(this, bitmap);
-                bitmap.recycle();
-                Intent data = new Intent();
-                data.setData(savedUri);
-                data.putExtra(EXTRA_RESULT_URI, savedUri);
-                setResult(RESULT_OK, data);
-                finish();
-            } catch (IOException e) {
-                Toast.makeText(this, "Save failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
+        Executors.newSingleThreadExecutor().execute(() -> {
+            Bitmap bitmap = cropImageView.getCroppedImage();
+            runOnUiThread(() -> {
+                doneBtn.setEnabled(true);
+                if (bitmap == null) {
+                    Toast.makeText(this, "Crop failed", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                try {
+                    Uri savedUri = ImageHelper.saveBitmapToCacheUri(this, bitmap);
+                    bitmap.recycle();
+                    Intent data = new Intent();
+                    data.setData(savedUri);
+                    data.putExtra(EXTRA_RESULT_URI, savedUri);
+                    setResult(RESULT_OK, data);
+                    finish();
+                } catch (IOException e) {
+                    Toast.makeText(this, "Save failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         });
-        cropImageView.getCroppedImageAsync();
     }
 }
