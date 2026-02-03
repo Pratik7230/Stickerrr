@@ -58,8 +58,17 @@ public class CreatePackActivity extends AppCompatActivity {
                     trayUri = uri;
                     imgTrayPreview.setImageURI(uri);
                 } else {
-                    addStickerFromUri(uri);
+                    launchStickerEditor(uri);
                 }
+            });
+
+    private final ActivityResultLauncher<Intent> stickerEditor = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() != RESULT_OK || result.getData() == null) return;
+                Uri uri = result.getData().getData();
+                if (uri == null) uri = result.getData().getParcelableExtra(StickerEditorActivity.EXTRA_RESULT_URI);
+                if (uri != null) addStickerFromUri(uri);
             });
 
     private final ActivityResultLauncher<Intent> pickTray = registerForActivityResult(
@@ -143,6 +152,12 @@ public class CreatePackActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private void launchStickerEditor(Uri imageUri) {
+        Intent i = new Intent(this, StickerEditorActivity.class);
+        i.putExtra(StickerEditorActivity.EXTRA_IMAGE_URI, imageUri);
+        stickerEditor.launch(i);
     }
 
     private void addStickerFromUri(Uri uri) {

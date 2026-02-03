@@ -27,4 +27,11 @@
     <string name="preview">Preview</string>
     <string name="replace_image">Replace image</string>
     <string name="update">Update</string>
+    <string name="sticker_editor">Edit sticker</string>
+    <string name="crop">Crop</string>
+    <string name="add_text">Add text</string>
+    <string name="remove_bg">Remove background</string>
+    <string name="done">Done</string>
+    <string name="text_hint">Enter text</string>
+    <string name="add">Add</string>
 </resources>

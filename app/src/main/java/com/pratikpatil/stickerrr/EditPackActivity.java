@@ -74,6 +74,16 @@ public class EditPackActivity extends AppCompatActivity
                 if (result.getResultCode() != RESULT_OK || result.getData() == null) return;
                 Uri uri = result.getData().getData();
                 if (uri == null) return;
+                launchStickerEditor(uri);
+            });
+
+    private final ActivityResultLauncher<Intent> stickerEditor = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() != RESULT_OK || result.getData() == null) return;
+                Uri uri = result.getData().getData();
+                if (uri == null) uri = result.getData().getParcelableExtra(StickerEditorActivity.EXTRA_RESULT_URI);
+                if (uri == null) return;
                 if (pendingReplacePosition >= 0 && pendingReplacePosition < stickers.size()) {
                     Sticker sticker = stickers.get(pendingReplacePosition);
                     try {
@@ -127,6 +137,7 @@ public class EditPackActivity extends AppCompatActivity
         });
 
         btnPickImage.setOnClickListener(v -> {
+            pendingReplacePosition = -1;
             Intent i = new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
             pickImage.launch(Intent.createChooser(i, getString(R.string.pick_image)));
         });
@@ -196,6 +207,12 @@ public class EditPackActivity extends AppCompatActivity
         } catch (Exception e) {
             Toast.makeText(this, "Failed to add sticker: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void launchStickerEditor(Uri imageUri) {
+        Intent i = new Intent(this, StickerEditorActivity.class);
+        i.putExtra(StickerEditorActivity.EXTRA_IMAGE_URI, imageUri);
+        stickerEditor.launch(i);
     }
 
     @Override
