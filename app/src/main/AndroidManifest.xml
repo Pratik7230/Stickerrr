@@ -40,6 +40,10 @@
             android:name=".StickerEditorActivity"
             android:exported="false"
             android:title="@string/sticker_editor" />
+        <activity
+            android:name=".CropActivity"
+            android:exported="false"
+            android:title="@string/crop" />
 
         <provider
             android:name=".stickerapi.StickerContentProvider"

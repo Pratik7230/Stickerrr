@@ -6,19 +6,15 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.canhub.cropper.CropImageContract;
-import com.canhub.cropper.CropImageContractOptions;
-import com.canhub.cropper.CropImageOptions;
-import com.canhub.cropper.CropImageView;
 import com.pratikpatil.stickerrr.createpack.ImageHelper;
 
 import java.io.IOException;
@@ -35,14 +31,16 @@ public class StickerEditorActivity extends AppCompatActivity {
     private ImageView imgPreview;
     private Uri currentUri;
 
-    private final ActivityResultLauncher<CropImageContractOptions> cropImage = registerForActivityResult(
-            new CropImageContract(),
+    private final ActivityResultLauncher<Intent> cropActivity = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
             result -> {
-                if (result.isSuccessful() && result.getUriContent() != null) {
-                    currentUri = result.getUriContent();
-                    loadPreview();
-                } else if (result.getError() != null) {
-                    Toast.makeText(this, "Crop failed", Toast.LENGTH_SHORT).show();
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Uri uri = result.getData().getData();
+                    if (uri == null) uri = result.getData().getParcelableExtra(CropActivity.EXTRA_RESULT_URI);
+                    if (uri != null) {
+                        currentUri = uri;
+                        loadPreview();
+                    }
                 }
             });
 
@@ -84,13 +82,9 @@ public class StickerEditorActivity extends AppCompatActivity {
     }
 
     private void launchCrop() {
-        CropImageOptions options = new CropImageOptions();
-        options.guidelines = CropImageView.Guidelines.ON;
-        options.aspectRatioX = 1;
-        options.aspectRatioY = 1;
-        options.outputCompressFormat = Bitmap.CompressFormat.PNG;
-
-        cropImage.launch(new CropImageContractOptions(currentUri, options));
+        Intent i = new Intent(this, CropActivity.class);
+        i.putExtra(CropActivity.EXTRA_IMAGE_URI, currentUri);
+        cropActivity.launch(i);
     }
 
     private void showAddTextDialog() {
